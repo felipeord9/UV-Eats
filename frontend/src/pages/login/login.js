@@ -7,6 +7,7 @@ import Logo2 from '../../../src/assets/univalle-logo-01.png'
 import Logo3 from '../../../src/assets/logo-universidad-del-valle.png'
 import Logo4 from '../../../src/assets/descarga.png'
 import Logo5 from '../../../src/assets/eats.png'
+import Logo6 from '../../../src/assets/eats2.png'
 import './login.css';
 import * as Bs from "react-icons/bs";
 
@@ -42,8 +43,8 @@ export default function Login({setToken}) {
     <div className=" wrapper d-flex justify-content-center align-items-center vh-100 w-100 m-auto bg-gradient">
       <div className='rounder-4'>
       <div className='login-wrapper shadow border-light rounded-4 border border-1 bg-gradient d-flexjustify-content-center 'style={{backgroundColor:'white'}}>
-      {/* <img src={Logo5} style={{height:150, width:200}}alt=''/> */}
-      <h1 className='text-danger'>Bienvenido a UV-Eats</h1>
+      <img src={Logo6} style={{height:200, width:300}}alt=''/>
+      {/* <h1 className='text-danger'>Bienvenido a UV-Eats</h1> */}
       <h2>Log In</h2>
       <form onSubmit={handleLogin} className=''>
         <div className='input_group m-2 '>

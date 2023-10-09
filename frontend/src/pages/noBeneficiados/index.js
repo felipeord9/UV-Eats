@@ -76,6 +76,13 @@ export default function TableSobrantes() {
     const handleIncripClose=()=>{
         setIsOpen(false)
     }
+    const [cerrar,setCerrar]=useState(false);
+    const handleOpenCerrar=()=>{
+        setCerrar(true);
+    }
+    const handleCerrar=()=>{
+        setCerrar(false);
+    }
   return (
     <div className=" wrapper d-flex justify-content-center align-items-center vh-100 w-100 m-auto bg-gradient">
     <div className='rounder-4'>
@@ -104,7 +111,16 @@ export default function TableSobrantes() {
         </Table>
      </TableContainer>
      <div className='d-flex flex-row text-align-center'>
-     <Button variant="contained" className="rounded-3 secondary m-4" type="submit"><a href="/login" className="text-decoration-none" style={{color:'white'}}>Salir</a></Button>
+     <Button onClick={handleOpenCerrar} variant="contained" className="rounded-3 secondary m-4" type="submit"><a href="/login" className="text-decoration-none" style={{color:'white'}}>Salir</a></Button>
+     <Modal open={cerrar}
+        onClose={handleCerrar}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+        >  
+        <Box sx={style}>
+          <h2 id="parent-modal-title" className='text-danger text-align-center'>* Se ha cerrado la sección *</h2>          
+        </Box>
+    </Modal> 
      <button onClick={handleIncripOpen} className='rounded-3 m-4' type="submit"><strong>Inscribirme</strong></button>
      <Modal open={isOpen}
         onClose={handleIncripClose}
