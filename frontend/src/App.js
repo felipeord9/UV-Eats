@@ -17,10 +17,10 @@ function getToken(){
   return userToken?.token
 }
 function App() {
-  const {token,setToken}=useState();
+  const {token,setToken}=useToken();
   /* const token=getToken(); */
   /* if(!token) {
-    return <Login setToken={token} />
+    return <Login setToken={setToken} />
   } */
 
   return (

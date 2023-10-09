@@ -14,7 +14,8 @@
     position: fixed;
       /* background-image: url("../../../src/assets/abstract-rainbow-6296890_1280.jpg");  */
       /* background-image: url('../../../src/assets/R.jpg'); */
-      background-image: url('../../../src/assets/eats2.png');
+      /* background-image: url('../../../src/assets/eats2.png'); */
+      background-image: url('../../../src/assets/better.jpeg');
       background-color: rgba(255, 255, 255, 0.7);
       background-blend-mode: overlay;
       background-repeat: no-repeat;
@@ -31,7 +32,8 @@
 .wrapper {
   /* background-image: url('../../../src/assets/abstract-rainbow-6296890_1280.jpg'); */
   /* background-image: url('../../../src/assets/R.jpg'); */
-  background-image: url('../../../src/assets/eats2.png');
+  /* background-image: url('../../../src/assets/eats2.png'); */
+  background-image: url('../../../src/assets/better.jpeg');
   background-blend-mode: overlay;
       background-repeat: no-repeat;
       background-attachment: fixed;
