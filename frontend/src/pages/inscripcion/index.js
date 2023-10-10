@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
+import QRCode from 'react-qr-code';
 
 const style = {
     position: 'absolute',
@@ -18,27 +19,59 @@ const style = {
 
 function ChildModal(){
     const [open,setOpen]=React.useState(false);
-    const handleOpen=()=>{
+    const [value, setValue] = useState(12);
+    const [back, setBack] = useState('#FFFFFF');
+    const [fore, setFore] = useState('#000000');
+    const [size, setSize] = useState(260,260);
+    const handleOpenEfectivo=()=>{
         setOpen(true);
     }
-    const handleClose=()=>{
+    const handleCloseEfectivo=()=>{
         setOpen(false);
+    }
+    const [nequi,setNequi]=useState(false);
+    const handleNaqui=()=>{
+      setNequi(true);
+    }
+    const handleCloseNequi=()=>{
+      setNequi(false);
     }
     return (
         <React.Fragment>
-          <button onClick={handleOpen} className='rounded-3 m-3' type="submit"><strong>Efectivo</strong></button>
-          <button onClick={handleOpen} className='rounded-3 m-3' type="submit"><strong>Nequi</strong></button>
+          <button onClick={handleOpenEfectivo} className='rounded-3 m-3' type="submit"><strong>Efectivo</strong></button>
+          <button onClick={handleNaqui} className='rounded-3 m-3' type="submit"><strong>Nequi</strong></button>
           <Modal
             open={open}
-            onClose={handleClose}
+            onClose={handleCloseEfectivo}
             aria-labelledby="child-modal-title"
             aria-describedby="child-modal-description"
           >
             <Box sx={style}>
-              <h2 id="child-modal-title" className="text-danger">¿Estas seguro?</h2>
-              <Button onClick={handleClose}>Yes</Button>
-              <Button color='error' onClick={handleClose}>No</Button>
+              <center>
+            <h2 id="child-modal-title" className="text-danger">* Felicidades *</h2>
+            </center>
+            <h4>Dirigirse donde el personal de bienestar y efectuar su pago para finalizar su compra</h4>
             </Box>
+          </Modal>
+          <Modal open={nequi}
+            onClose={handleCloseNequi}
+            aria-labelledby="child-modal-title"
+            aria-describedby="child-modal-description">
+              <Box sx={style}>
+              <center>
+              <h2 className="text-danger m-3">Su código de pago es: </h2>
+              {value && (
+              <QRCode
+                title="GeeksForGeeks"
+                value={value}
+                bgColor={back}
+                fgColor={fore}
+                size={size === '' ? 0 : size} 
+            />
+            )}
+              <h6>Una vez efectuado el pago, se completará su proceso de compra</h6>
+            </center>
+              </Box>
           </Modal>
         </React.Fragment>
       );
@@ -78,14 +111,19 @@ export default function Inscripcion(){
         </div>
         <h3>¿Desea realizar la compra del almuerzo del dia de hoy?</h3>
         <div className="d-flex flex-row " style={{justifyContent:'space-between'}}>
-        <Button onClick={handleOpenCerrar} variant="contained" className="rounded-3 secondary m-3" type="submit"><a href="/login" className="text-decoration-none" style={{color:'white'}}>Cancelar</a></Button>
+        <Button onClick={handleOpenCerrar} variant="contained" className="rounded-3 secondary m-3" type="submit">Cancelar</Button>
         <Modal open={cerrar}
           onClose={handleCerrar}
           aria-labelledby="parent-modal-title"
           aria-describedby="parent-modal-description"
         >  
         <Box sx={style}>
-          <h2 id="parent-modal-title" className='text-danger text-align-center'>* Se ha cerrado la sección *</h2>          
+          {/* <h2 id="parent-modal-title" className='text-danger text-align-center'>* Se ha cerrado la sección *</h2>  */}
+          <center>
+          <h2 id="parent-modal-title" className='text-danger text-align-center'>¿Está seguro que desea cerrar la sección?</h2>
+          <Button variant="contained" className='m-4' onClick={handleCerrar}><a href="/login" className="text-decoration-none" style={{color:'white'}}>Yes</a></Button>
+          <Button variant="contained" className="m-4" color='error' onClick={handleCerrar}>No</Button> 
+          </center>        
         </Box>
         </Modal> 
         <button onClick={handleOpen} className='rounded-3 m-3' type="submit"><strong>Comprar</strong></button>
@@ -96,8 +134,10 @@ export default function Inscripcion(){
         aria-describedby="parent-modal-description"
         >  
         <Box sx={style}>
+          <center>
           <h2 id="parent-modal-title">¿De qué forma desea cancelar su compra?</h2>
           <ChildModal />
+          </center>
         </Box>
         </Modal>   
         </div>
