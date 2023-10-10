@@ -25,7 +25,7 @@ function App() {
 
   return (
     <Router>
-    <div id='wrapper' className="d-flex vh-100 overflow-scroll">
+    <div id='wrapper' className="d-flex vh-100">
      <Routes>
         {/* <Route path='/' element={<Navigate to='/login'/>}/> */}
         <Route path='/' element={<Login/>}/>
