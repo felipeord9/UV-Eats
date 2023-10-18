@@ -10,6 +10,7 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import React, { useState } from "react";
 import QRCode from 'react-qr-code';
+import TablePagination from '@mui/material/TablePagination';
 
 const style = {
     align:'center',
@@ -25,6 +26,7 @@ const style = {
     borderRadius:5
     
 };
+
 function ChildModal(){
     const [open,setOpen]=React.useState(false);
     const [value, setValue] = useState(12);
@@ -85,6 +87,12 @@ function ChildModal(){
       );
 }
 
+const columns=[
+  {id:'no',label:'No',minWidth:170},
+  {id:'codigo',label:'codigo',minWidth:170},
+  {id:'nombre',label:'nombre',minWidth:170}
+]
+
 function createData(no,codigo,nombre){
     return{no,codigo,nombre};
 }
@@ -92,11 +100,25 @@ const rows =[
     createData('1','202038347','Catalina Cubillos'),
     createData('2','202020200','Felipe Ordoñez'),
     createData('3','201923456','Antonio Velez'),
-    createData('4','202234212','Jose Albeiro')
+    createData('4','202234212','Jose Albeiro'),
+    createData('1','202038347','Catalina Cubillos'),
+    createData('2','202020200','Felipe Ordoñez'),
+    createData('3','201923456','Antonio Velez'),
+    createData('4','202234212','Jose Albeiro'),
 ]
 export default function TableSobrantes() {
     const [open,setOpen]=useState(false);
     const [isOpen,setIsOpen]=useState(false);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(+event.target.value);
+      setPage(0);
+    };
     const handleOpen=()=>{
         setOpen(true);
     }
@@ -121,28 +143,53 @@ export default function TableSobrantes() {
     <div className='rounder-4'>
     <div className='login-wrapper shadow border-light rounded-4 border border-1 bg-gradient d-flexjustify-content-between 'style={{backgroundColor:'white'}}>
     <h2 className='text-danger m-3'><strong>Listado *No* beneficiarios inscritos por orden</strong></h2>
-     <TableContainer component={Paper}>
-        <Table sx={{minWidth:650}} aria-aria-label='Tabla Sobrantes'>
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table stickyHeader aria-label="sticky table">
             <TableHead>
                 <TableRow>
-                    <TableCell align='center'><strong>Position</strong></TableCell>
-                    <TableCell align='center'><strong>Código</strong></TableCell>
-                    <TableCell align='center'><strong>Nombre</strong></TableCell>
+                  {columns.map((column)=>(
+                    <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ minWidth: column.minWidth }}
+                  >
+                    {column.label}
+                    </TableCell>))}
                 </TableRow>
             </TableHead>
             <TableBody>
-                {rows.map((row)=>(
-                    <TableRow key={row.name} sx={{'&:last-child td, &:last-child th': { border: 0 }}}>
-                        <TableCell component='th' scope='row' align='center'>{row.no}</TableCell>
-                        <TableCell component='th' scope='row' align='center'>
-                            {row.codigo}
+            {rows
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => {
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.format && typeof value === 'number'
+                            ? column.format(value)
+                            : value}
                         </TableCell>
-                        <TableCell component='th' scope='row' align='center'>{row.nombre}</TableCell>
-                    </TableRow>
-                ))}
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
             </TableBody>
         </Table>
      </TableContainer>
+     <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+      </Paper>
      <div className='d-flex flex-row text-align-center'>
      <Button onClick={handleOpenCerrar} variant="contained" className="rounded-3 secondary m-4" type="submit">Salir</Button>
      <Modal open={cerrar}

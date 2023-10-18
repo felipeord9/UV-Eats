@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import QRCode from 'react-qr-code';
+import { Fade } from "react-awesome-reveal";
 
 const style = {
     position: 'absolute',
@@ -100,7 +101,9 @@ export default function Inscripcion(){
         <div className='rounder-4'>
         <div className='login-wrapper shadow border-light rounded-4 border border-1 bg-gradient d-flexjustify-content-between 'style={{backgroundColor:'white'}}>
         {/* <img src={Logo4} style={{height:300, width:500}}alt=''/> */}
+        <Fade cascade>
         <h1 className='text-danger'>Bienvenid@ a UV-Eats Beneficiari@</h1>
+        
         <div className="d-flex flex-row">
             <h3 className="text-danger">Nombre:</h3>
             <h3>Catalina Cubillos</h3>
@@ -116,7 +119,7 @@ export default function Inscripcion(){
           onClose={handleCerrar}
           aria-labelledby="parent-modal-title"
           aria-describedby="parent-modal-description"
-        >  
+          >  
         <Box sx={style}>
           {/* <h2 id="parent-modal-title" className='text-danger text-align-center'>* Se ha cerrado la sección *</h2>  */}
           <center>
@@ -126,7 +129,7 @@ export default function Inscripcion(){
           </center>        
         </Box>
         </Modal> 
-        <button onClick={handleOpen} className='rounded-3 m-3' type="submit"><strong>Comprar</strong></button>
+        <button onClick={handleOpen} className='rounded-3 m-3' type="submit"><strong>COMPRAR</strong></button>
         <div className="d-flex flex-center justify-content-center">
         <Modal open={open}
         onClose={handleClose}
@@ -142,6 +145,7 @@ export default function Inscripcion(){
         </Modal>   
         </div>
         </div>
+        </Fade>
       </div>
       </div>
       </div>

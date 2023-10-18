@@ -10,6 +10,7 @@ import Logo5 from '../../../src/assets/eats.png'
 import Logo6 from '../../../src/assets/eats2.png'
 import Better from '../../../src/assets/better.jpeg'
 import './login.css';
+import { Fade } from "react-awesome-reveal";
 import * as Bs from "react-icons/bs";
 import { Navigate } from 'react-router-dom';
 
@@ -44,6 +45,7 @@ export default function Login({setToken}) {
   return(
     <div className=" wrapper d-flex justify-content-center align-items-center vh-100 w-100 m-auto bg-gradient">
       <div className='rounder-4'>
+      <Fade cascade direction='down'>
       <div className='login-wrapper shadow border-light rounded-4 border border-1 bg-gradient d-flexjustify-content-center 'style={{backgroundColor:'white'}}>
       <img src={Better} style={{height:200, width:300}}alt=''/>
       {/* <h1 className='text-danger'>Bienvenido a UV-Eats</h1> */}
@@ -64,6 +66,7 @@ export default function Login({setToken}) {
         <label><a href='/recovery' className='text-decoration-none m-2' style={{fontSize:'medium'}}><strong>¿Olvidaste tu constraseña?</strong></a></label>
       </form>
     </div>
+    </Fade>
     </div>
     </div>
   )

@@ -5,6 +5,8 @@ import {Route, Routes,BrowserRouter as Router, Navigate} from 'react-router-dom'
 import Login from '../src/pages/login/login'
 import Inscripcion from './pages/inscripcion';
 import TableSobrantes from './pages/noBeneficiados';
+import TablaBecas from './pages/listaBeca';
+import Penalizacion from './pages/penalizacion';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 
@@ -32,6 +34,8 @@ function App() {
         <Route path='/login' element={<Login/>}/>
         <Route path='/inscripcion' element={<Inscripcion/>}/>
         <Route path='/no/beneficiarios' element={<TableSobrantes/>}/>
+        <Route path='/tabla/becas' element={<TablaBecas/>}/>
+        <Route path='/penalizacion' element={<Penalizacion/>}/>
      </Routes>
     </div>
     </Router>
