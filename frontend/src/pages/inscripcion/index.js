@@ -4,6 +4,12 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import QRCode from 'react-qr-code';
 import { Fade } from "react-awesome-reveal";
+import MobileStepper from '@mui/material/MobileStepper';
+import { useNavigate } from 'react-router-dom';
+import User from '../../assets/user.png'
+import Comunicacion from '../../assets/comunicacion.jpg'
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 const style = {
     position: 'absolute',
@@ -79,6 +85,7 @@ function ChildModal(){
 }
 
 export default function Inscripcion(){
+  const navigate = useNavigate();
     const handleSubmit=async(e)=>{
         e.preventDefault();
     }
@@ -97,22 +104,27 @@ export default function Inscripcion(){
         setCerrar(false);
     }
     return(
-        <div className=" wrapper d-flex justify-content-center align-items-center vh-100 w-100 m-auto bg-gradient">
-        <div className='rounder-4'>
-        <div className='login-wrapper shadow border-light rounded-4 border border-1 bg-gradient d-flexjustify-content-between 'style={{backgroundColor:'white'}}>
-        {/* <img src={Logo4} style={{height:300, width:500}}alt=''/> */}
+      <div className=' w-100 h-100 d-flex flex-row'>
+    <div className='' style={{width:150}}></div>  
+    <div className="d-flex justify-content-center align-items-center w-100 " style={{userSelect:'none'}}>
         <Fade cascade>
-        <h1 className='text-danger'>Bienvenid@ a UV-Eats Beneficiari@</h1>
-        
+        <div className='login-wrapper shadow border-light rounded-4 border border-1 bg-gradient 'style={{backgroundColor:'white'}}>
         <div className="d-flex flex-row">
-            <h3 className="text-danger">Nombre:</h3>
-            <h3>Catalina Cubillos</h3>
+            <div className="pe-5 me-5">
+                <h1 className="p-2 rounded-4" style={{color:'white',backgroundColor:'#FF0000'}}>Bienvenido</h1>
+            </div>
+            <div className="d-flex flex-row pb-5 mb-3">
+                <img src={User} style={{width:60}}/>
+                <div className="ps-2 pt-2">
+                    <h5><strong>Catalina García Cubillos</strong></h5>
+                    <div className="d-flex flex-row">
+                        <h5><strong>202058958</strong></h5>
+                        <label className="ps-2" style={{color:'#39FF14'}}>sin penalización</label>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div className="d-flex flex-row">
-            <h3 className="text-danger">Código:</h3>
-            <h3>202014532</h3>
-        </div>
-        <h3>¿Desea realizar la compra del almuerzo del dia de hoy?</h3>
+        <h3 className="mb-3">¿Desea realizar la compra del almuerzo del dia de hoy?</h3>
         <div className="d-flex flex-row " style={{justifyContent:'space-between'}}>
         <Button onClick={handleOpenCerrar} variant="contained" className="rounded-3 secondary m-3" type="submit">Cancelar</Button>
         <Modal open={cerrar}
@@ -129,9 +141,33 @@ export default function Inscripcion(){
           </center>        
         </Box>
         </Modal> 
-        <button onClick={handleOpen} className='rounded-3 m-3' type="submit"><strong>COMPRAR</strong></button>
+        <button onClick={(e)=>navigate('/compra')} className='rounded-3 m-3' type="submit"><strong>COMPRAR</strong></button>
         <div className="d-flex flex-center justify-content-center">
-        <Modal open={open}
+        </div>
+        </div>
+        <MobileStepper
+        steps={3}
+        position="static"
+        /* activeStep={activeStep} */
+      />
+      </div>
+        </Fade>
+        </div>
+        <div className='d-flex h-100 d-flex flex-column'>
+          <div className='h-100'>
+          </div>
+          <div className=' h-25'>
+            <Button onClick={(e)=>navigate('/PQRS')} type='button'><img src={Comunicacion} style={{height:100,width:100}}></img></Button>
+          </div>
+        </div>
+    </div>
+    );
+}
+
+{/* 
+        estructura para un childModal
+
+<Modal open={open}
         onClose={handleClose}
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
@@ -142,12 +178,4 @@ export default function Inscripcion(){
           <ChildModal />
           </center>
         </Box>
-        </Modal>   
-        </div>
-        </div>
-        </Fade>
-      </div>
-      </div>
-      </div>
-    );
-}
+        </Modal>  */}

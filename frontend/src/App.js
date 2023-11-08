@@ -7,6 +7,10 @@ import Inscripcion from './pages/inscripcion';
 import TableSobrantes from './pages/noBeneficiados';
 import TablaBecas from './pages/listaBeca';
 import Penalizacion from './pages/penalizacion';
+import PQRS from './pages/PQRS'
+import Compra from './pages/compra'
+import Efectivo from './pages/efectivo';
+import Nequi from './pages/nequi';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 
@@ -36,6 +40,10 @@ function App() {
         <Route path='/no/beneficiarios' element={<TableSobrantes/>}/>
         <Route path='/tabla/becas' element={<TablaBecas/>}/>
         <Route path='/penalizacion' element={<Penalizacion/>}/>
+        <Route path='/PQRS' element={<PQRS/>}/>
+        <Route path='/compra' element={<Compra/>}/>
+        <Route path='/compra/efectivo' element={<Efectivo/>}/>
+        <Route path='/compra/nequi' element={<Nequi/>}/>
      </Routes>
     </div>
     </Router>

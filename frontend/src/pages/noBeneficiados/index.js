@@ -18,7 +18,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 500,
     bgcolor: 'background.paper',
     justifyContent:'center',
     boxShadow: 24,
@@ -214,12 +214,12 @@ export default function TableSobrantes() {
         >  
         <Box sx={style}>
         <center>
-          <h2 id="parent-modal-title" className='text-danger text-align-center'>* Felicidades *</h2>          
-          <h4 id="parent-modal-title">Usted se ha inscrito satisfactoriamente</h4>
+          <h1 id="parent-modal-title" style={{fontSize:80}} className='text-danger text-align-center pb-4'> ¡Qué bien! </h1>          
+          <h3 id="parent-modal-title">Te haz inscrito satisfactoriamente</h3>
           </center>
         </Box>
     </Modal>                 
-     <button onClick={handleOpen} className='rounded-3 m-4' type="submit"><strong>Comprar</strong></button>
+     <button onClick={handleOpen} disabled className='rounded-3 m-4' type="submit"><strong>Comprar</strong></button>
      <Modal open={open}
         onClose={handleClose}
         aria-labelledby="parent-modal-title"
