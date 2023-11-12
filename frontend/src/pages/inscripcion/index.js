@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
@@ -7,6 +7,9 @@ import { Fade } from "react-awesome-reveal";
 import MobileStepper from '@mui/material/MobileStepper';
 import { useNavigate } from 'react-router-dom';
 import User from '../../assets/user.png'
+import AuthContext from "../../context/authContext";
+import Ayuda1 from '../../assets/ayuda1.png'
+import useUser from "../../hooks/useUser";
 import Comunicacion from '../../assets/comunicacion.jpg'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
@@ -85,6 +88,8 @@ function ChildModal(){
 }
 
 export default function Inscripcion(){
+  const { user, setUser } = useContext(AuthContext);
+  const { isLogged, logout } = useUser();
   const navigate = useNavigate();
     const handleSubmit=async(e)=>{
         e.preventDefault();
@@ -104,6 +109,8 @@ export default function Inscripcion(){
         setCerrar(false);
     }
     return(
+      <>
+      {isLogged && (
       <div className=' w-100 h-100 d-flex flex-row'>
     <div className='' style={{width:150}}></div>  
     <div className="d-flex justify-content-center align-items-center w-100 " style={{userSelect:'none'}}>
@@ -114,11 +121,11 @@ export default function Inscripcion(){
                 <h1 className="p-2 rounded-4" style={{color:'white',backgroundColor:'#FF0000'}}>Bienvenido</h1>
             </div>
             <div className="d-flex flex-row pb-5 mb-3">
-                <img src={User} style={{width:60}}/>
+                <img src={User} style={{width:70,height:60}}/>
                 <div className="ps-2 pt-2">
-                    <h5><strong>Catalina García Cubillos</strong></h5>
+                    <h5><strong>{user.name}</strong></h5>
                     <div className="d-flex flex-row">
-                        <h5><strong>202058958</strong></h5>
+                        <h5><strong>{user.email}</strong></h5>
                         <label className="ps-2" style={{color:'#39FF14'}}>sin penalización</label>
                     </div>
                 </div>
@@ -136,7 +143,7 @@ export default function Inscripcion(){
           {/* <h2 id="parent-modal-title" className='text-danger text-align-center'>* Se ha cerrado la sección *</h2>  */}
           <center>
           <h2 id="parent-modal-title" className='text-danger text-align-center'>¿Está seguro que desea cerrar la sección?</h2>
-          <Button variant="contained" className='m-4' onClick={handleCerrar}><a href="/login" className="text-decoration-none" style={{color:'white'}}>Yes</a></Button>
+          <Button onClick={(e)=>(logout(e),handleCerrar)} variant="contained" className='m-4'>Yes</Button>
           <Button variant="contained" className="m-4" color='error' onClick={handleCerrar}>No</Button> 
           </center>        
         </Box>
@@ -156,11 +163,13 @@ export default function Inscripcion(){
         <div className='d-flex h-100 d-flex flex-column'>
           <div className='h-100'>
           </div>
-          <div className=' h-25'>
-            <Button onClick={(e)=>navigate('/PQRS')} type='button'><img src={Comunicacion} style={{height:100,width:100}}></img></Button>
+          <div className=' h-25 me-3'>
+            <Button onClick={(e)=>navigate('/PQRS')} type='button'><img src={Ayuda1} style={{height:100,width:100}}></img></Button>
           </div>
         </div>
     </div>
+    )}
+    </>
     );
 }
 

@@ -20,7 +20,7 @@ const columns=[
   }
   const rows =[
       createData('202038347','Catalina Cubillos','11/10/2023 - 12/10/2023 - 15/10/2023 - 17/10/2023'),
-      createData('202020200','Felipe Ordoñez'),
+      createData('202020200','Felipe Ordoñez',),
       createData('201923456','Antonio Velez'),
       createData('202234212','Jose Albeiro'),
       createData('202038347','Catalina Cubillos'),

@@ -8,9 +8,15 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import QRCode from 'react-qr-code';
+import { useNavigate } from 'react-router-dom';
+import useUser from "../../hooks/useUser";
+import AuthContext from "../../context/authContext";
 import TablePagination from '@mui/material/TablePagination';
+import User from '../../assets/user.png'
+import Ayuda1 from '../../assets/ayuda1.png'
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const style = {
     align:'center',
@@ -88,9 +94,9 @@ function ChildModal(){
 }
 
 const columns=[
-  {id:'no',label:'No',minWidth:170},
-  {id:'codigo',label:'codigo',minWidth:170},
-  {id:'nombre',label:'nombre',minWidth:170}
+  {id:'no',label:'Turno',minWidth:70},
+  {id:'codigo',label:'codigo',minWidth:120},
+  {id:'nombre',label:'nombre',minWidth:200}
 ]
 
 function createData(no,codigo,nombre){
@@ -107,6 +113,11 @@ const rows =[
     createData('4','202234212','Jose Albeiro'),
 ]
 export default function TableSobrantes() {
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [buttonColor, setButtonColor] = useState('red');
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(AuthContext);
+  const { isLogged, logout } = useUser();
     const [open,setOpen]=useState(false);
     const [isOpen,setIsOpen]=useState(false);
     const [page, setPage] = useState(0);
@@ -115,6 +126,13 @@ export default function TableSobrantes() {
       setPage(newPage);
     };
   
+    const handleButtonClick = () => {
+      // Cambia el color del botón
+      setButtonColor('grey');
+      
+      // Deshabilita el botón
+      setIsButtonDisabled(true);
+    };
     const handleChangeRowsPerPage = (event) => {
       setRowsPerPage(+event.target.value);
       setPage(0);
@@ -139,12 +157,30 @@ export default function TableSobrantes() {
         setCerrar(false);
     }
   return (
-    <div className=" wrapper d-flex justify-content-center align-items-center vh-100 w-100 m-auto bg-gradient">
-    <div className='rounder-4'>
-    <div className='login-wrapper shadow border-light rounded-4 border border-1 bg-gradient d-flexjustify-content-between 'style={{backgroundColor:'white'}}>
-    <h2 className='text-danger m-3'><strong>Listado *No* beneficiarios inscritos por orden</strong></h2>
+    <>
+      {isLogged && (
+    <div className=' w-100 h-100 d-flex flex-row'>
+    <div className='' style={{width:150}}></div>  
+    <div className="d-flex justify-content-center align-items-center w-100 " style={{userSelect:'none'}}>
+    <div className='login-wrapper shadow border-light rounded-4 border border-1 bg-gradient 'style={{backgroundColor:'white'}}>
+    <div className="d-flex flex-row">
+            <div className="pe-5 me-5">
+                <h1 className="p-2 pe-5 ps-5   rounded-4" style={{color:'white',backgroundColor:'#FF0000'}}>Fila Virtual</h1>
+            </div>
+            <div className="d-flex flex-row mb-2 ms-5">
+                <img src={User} style={{width:70,height:60}}/>
+                <div className="ps-2 pt-2">
+                    <h5><strong>{user.name}</strong></h5>
+                    <div className="d-flex flex-row">
+                        <h5><strong>{user.email}</strong></h5>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    <h2 className='text-danger m-3 mt-1'><strong>Listado *No* beneficiarios inscritos por orden</strong></h2>
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer sx={{ maxHeight: 250 }}>
         <Table stickyHeader aria-label="sticky table">
             <TableHead>
                 <TableRow>
@@ -190,8 +226,9 @@ export default function TableSobrantes() {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
       </Paper>
-     <div className='d-flex flex-row text-align-center'>
-     <Button onClick={handleOpenCerrar} variant="contained" className="rounded-3 secondary m-4" type="submit">Salir</Button>
+      <div className='d-flex flex-row w-100'>
+     <div className='d-flex flex-row text-align-center w-25' >
+     <Button onClick={handleOpenCerrar} variant="contained" className="rounded-3 secondary m-4" type="submit"><IoMdArrowRoundBack/>Salir</Button>
      <Modal open={cerrar}
         onClose={handleCerrar}
         aria-labelledby="parent-modal-title"
@@ -201,12 +238,17 @@ export default function TableSobrantes() {
           {/* <h2 id="parent-modal-title" className='text-danger text-align-center'>* Se ha cerrado la sección *</h2> */} 
           <center>
           <h2 id="parent-modal-title" className='text-danger text-align-center'>¿Está seguro que desea cerrar la sección?</h2>
-          <Button variant="contained" className='m-4' onClick={handleCerrar}><a href="/login" className="text-decoration-none" style={{color:'white'}}>Yes</a></Button>
+          <Button onClick={(e)=>(logout(e),handleCerrar)} variant="contained" className='m-4' >Yes</Button>
           <Button variant="contained" className="m-4" color='error' onClick={handleCerrar}>No</Button> 
           </center>         
         </Box>
     </Modal> 
-     <button onClick={handleIncripOpen} className='rounded-3 m-4' type="submit"><strong>Inscribirme</strong></button>
+     </div>
+     <div className='w-25'>
+
+     </div>
+     <div className='w-100'>
+     <button onClick={(e)=>(handleButtonClick(e.target.value),handleIncripOpen(e.target.value))} disabled={isButtonDisabled} style={{ backgroundColor: buttonColor }} className='rounded-3 m-4' type="submit"><strong>Inscribirme</strong></button>
      <Modal open={isOpen}
         onClose={handleIncripClose}
         aria-labelledby="parent-modal-title"
@@ -218,8 +260,10 @@ export default function TableSobrantes() {
           <h3 id="parent-modal-title">Te haz inscrito satisfactoriamente</h3>
           </center>
         </Box>
-    </Modal>                 
-     <button onClick={handleOpen} disabled className='rounded-3 m-4' type="submit"><strong>Comprar</strong></button>
+    </Modal> 
+    </div>
+    </div>                
+     {/* <button onClick={handleOpen} disabled className='rounded-3 m-4' type="submit"><strong>Comprar</strong></button>
      <Modal open={open}
         onClose={handleClose}
         aria-labelledby="parent-modal-title"
@@ -229,10 +273,18 @@ export default function TableSobrantes() {
           <h2 id="parent-modal-title">¿De qué forma desea cancelar su compra?</h2>
           <ChildModal />
         </Box>
-    </Modal>                
-     </div>
+    </Modal>    */}             
      </div>
     </div>
+    <div className='d-flex h-100 d-flex flex-column'>
+          <div className='h-100'>
+          </div>
+          <div className=' h-25 me-3'>
+            <Button onClick={(e)=>navigate('/PQRS')} type='button'><img src={Ayuda1} style={{height:100,width:100}}></img></Button>
+          </div>
+        </div>
     </div>
+    )}
+    </>
   )
 }

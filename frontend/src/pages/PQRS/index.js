@@ -16,8 +16,12 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
+import useUser from "../../hooks/useUser";
+import Ayuda from '../../assets/ayuda1.png';
+import Blanco from '../../assets/blanco.png'
 
 export default function PQRS(){
+    const { isLogged, logout } = useUser();
     const navigate = useNavigate();
 
     const labelMegusta = { inputProps: { 'aria-label': 'Checkbox demo' } };
@@ -44,7 +48,7 @@ export default function PQRS(){
                 </div>
             </div>
             <div className="ms-3">
-                <img src={Comunicacion} style={{width:80,height:80}}/>
+                <img src={Ayuda} style={{width:80,height:80}}/>
             </div>
             </div>
             <div className="d-flex flex-row pt-3 pb-3">
@@ -69,7 +73,7 @@ export default function PQRS(){
             </div>  
                 <div style={{width:650}} className="d-flex flex-row ps-5 ms-5 mt-3">
                     <div>
-                        <img src={Comunicacion} style={{width:50}}/>
+                        <img src={Ayuda} style={{width:50}}/>
                     </div>
                     <div className="d-flex flex-column">
                         <h5 className="text-danger">Servicio al Usuario</h5>
@@ -94,7 +98,7 @@ export default function PQRS(){
         <div className='p-3 rounded-4 d-flex flex-row justify-content-center text-align-center' style={{backgroundColor:'#FF0000'}}>
             
             <div>
-                <img src={Comunicacion} style={{width:70,height:70}}/>
+                <img src={Blanco} style={{width:70,height:70}}/>
             </div>
             <div className="d-flex flex-column ms-4">
                 <div>
@@ -108,13 +112,13 @@ export default function PQRS(){
                 </div>
             </div>
         </div>
-        <div className="w-50">
+        <div className="w-75">
 
         </div>
         <div className=' justify-content-end' >
             <div className="h-50"></div>
-            <div className="me-4 ">
-            <Button variant="contained" onClick={(e)=>navigate('/Login')} type='button'><BiArrowToLeft/>Salir</Button>
+            <div className="me-5 pb-2 ">
+            <Button variant="contained" onClick={(e)=>(logout(e),navigate('/login'))} type='button'><BiArrowToLeft/>Salir</Button>
             </div>
         </div>
         </div>
