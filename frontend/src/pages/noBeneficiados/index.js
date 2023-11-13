@@ -8,14 +8,16 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import QRCode from 'react-qr-code';
 import { useNavigate } from 'react-router-dom';
 import useUser from "../../hooks/useUser";
 import AuthContext from "../../context/authContext";
 import TablePagination from '@mui/material/TablePagination';
 import User from '../../assets/user.png'
+import TableUsers from "../../components/TableUsers"
 import Ayuda1 from '../../assets/ayuda1.png'
+import { findUsers, updateUser } from "../../services/userService"
 import { IoMdArrowRoundBack } from "react-icons/io";
 
 const style = {
@@ -92,7 +94,7 @@ function ChildModal(){
         </React.Fragment>
       );
 }
-
+/* 
 const columns=[
   {id:'no',label:'Turno',minWidth:70},
   {id:'codigo',label:'codigo',minWidth:120},
@@ -107,11 +109,8 @@ const rows =[
     createData('2','202020200','Felipe Ordoñez'),
     createData('3','201923456','Antonio Velez'),
     createData('4','202234212','Jose Albeiro'),
-    createData('1','202038347','Catalina Cubillos'),
-    createData('2','202020200','Felipe Ordoñez'),
-    createData('3','201923456','Antonio Velez'),
-    createData('4','202234212','Jose Albeiro'),
-]
+] */
+
 export default function TableSobrantes() {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [buttonColor, setButtonColor] = useState('red');
@@ -125,7 +124,29 @@ export default function TableSobrantes() {
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
+    const [color,setColor] = useState('#A9A9A9')
+    /* TABLA */
+    const [loading, setLoading] = useState(false)
+    const [suggestions, setSuggestions] = useState([])
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+      getAllUsers()
+    }, []);
   
+    const getAllUsers = () => {
+      setLoading(true)
+      findUsers()
+        .then(({ data }) => {
+          setUsers(data)
+          setSuggestions(data)
+          setLoading(false)
+        })
+        .catch((error) => {
+          setLoading(false)
+        });
+    }
+
     const handleButtonClick = () => {
       // Cambia el color del botón
       setButtonColor('grey');
@@ -156,6 +177,63 @@ export default function TableSobrantes() {
     const handleCerrar=()=>{
         setCerrar(false);
     }
+
+    const [info,setInfo]=useState({
+      
+      estado:"",
+    })
+    useEffect(()=>{
+      if(user){
+        setInfo({
+          
+          estado: user?.estado
+        })
+      }
+    },[user])
+    const handleChange = (e) => {
+      const { id, value } = e.target;
+      setInfo({
+        ...info,
+        [id]: value,
+      });
+    };
+    const handleUpdateUser=(e)=>{
+      e.preventDefault();
+      updateUser(user.id,info)
+    }
+
+    /* Color y habilitacion de los botones */
+    const ColorButton = ({valor})=>{
+      const [colorButton,setColorButton]=useState();
+      const isButtonDisabled = valor ==='En Fila';
+      useEffect(() => {
+        // Lógica para determinar el color basado en el valor de la base de datos
+        if (valor === 'En Fila') {
+          setColorButton('grey');
+        } 
+      }, [valor]);
+      return(
+        <button disabled={isButtonDisabled} style={{backgroundColor:colorButton}}  className='rounded-3 m-4' type="submit" onClick={(e)=>(handleButtonClick(e),
+          handleIncripOpen(e),
+          handleUpdateUser(e))} 
+           >Inscribirme</button>
+      )
+    }
+    const ColorButton2 = ({valor})=>{
+      const [colorButton,setColorButton]=useState();
+      const isButtonDisabled = valor === null;
+      useEffect(() => {
+        // Lógica para determinar el color basado en el valor de la base de datos
+        if (valor === null) {
+          setColorButton('grey');
+        } 
+      }, [valor]);
+      return(
+        <button disabled={isButtonDisabled} style={{backgroundColor:colorButton}}  className='rounded-3 m-4' type="submit" onClick={(e)=>navigate('/compra')} 
+           >comprar</button>
+      )
+    }
+
   return (
     <>
       {isLogged && (
@@ -173,13 +251,13 @@ export default function TableSobrantes() {
                     <h5><strong>{user.name}</strong></h5>
                     <div className="d-flex flex-row">
                         <h5><strong>{user.email}</strong></h5>
-                        
+                        <label className="ps-2" style={{color:color}}>{user.estado}</label>
                     </div>
                 </div>
             </div>
         </div>
     <h2 className='text-danger m-3 mt-1'><strong>Listado *No* beneficiarios inscritos por orden</strong></h2>
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+    {/* <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 250 }}>
         <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -216,16 +294,9 @@ export default function TableSobrantes() {
             </TableBody>
         </Table>
      </TableContainer>
-     <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-      </Paper>
+     
+      </Paper> */}
+      <TableUsers users={suggestions} loading={loading} style={{fontSize:20}}/>
       <div className='d-flex flex-row w-100'>
      <div className='d-flex flex-row text-align-center w-25' >
      <Button onClick={handleOpenCerrar} variant="contained" className="rounded-3 secondary m-4" type="submit"><IoMdArrowRoundBack/>Salir</Button>
@@ -247,8 +318,16 @@ export default function TableSobrantes() {
      <div className='w-25'>
 
      </div>
-     <div className='w-100'>
-     <button onClick={(e)=>(handleButtonClick(e.target.value),handleIncripOpen(e.target.value))} disabled={isButtonDisabled} style={{ backgroundColor: buttonColor }} className='rounded-3 m-4' type="submit"><strong>Inscribirme</strong></button>
+     <div style={{width:500}}>
+{/*       <input id="estado" type='text' onChange={handleChange} value={info.estado}/>
+ */}     <ColorButton onClick={(e)=>(handleButtonClick(e),
+                            handleIncripOpen(e),
+                            handleUpdateUser(e))} 
+                            disabled={isButtonDisabled} 
+                            style={{ backgroundColor: buttonColor }} 
+                            valor={user.estado}
+                            className='rounded-3 m-4' type="submit">
+                            <strong>Inscribirme</strong></ColorButton>
      <Modal open={isOpen}
         onClose={handleIncripClose}
         aria-labelledby="parent-modal-title"
@@ -262,7 +341,10 @@ export default function TableSobrantes() {
         </Box>
     </Modal> 
     </div>
-    </div>                
+    <div style={{width:200}}>
+    <ColorButton2 onClick={(e)=>navigate('/compra')}  valor={user.estado} className='rounded-3 m-4' type="submit"><strong>Comprar</strong></ColorButton2>  
+    </div>           
+    </div>   
      {/* <button onClick={handleOpen} disabled className='rounded-3 m-4' type="submit"><strong>Comprar</strong></button>
      <Modal open={open}
         onClose={handleClose}

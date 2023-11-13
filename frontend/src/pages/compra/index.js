@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
@@ -28,7 +28,22 @@ const style = {
     p: 4,
     borderRadius:5
 };
-
+const ColorChangingLabel = ({valor}) => {
+    const [labelColor, setLabelColor] = useState('#39FF14');
+    useEffect(() => {
+      // Lógica para determinar el color basado en el valor de la base de datos
+      if (valor === 'Penalizado') {
+        setLabelColor('red');
+      } else {
+        setLabelColor('#39FF14');
+      }
+    }, [valor]);
+        /* setLabelColor('#A9A9A9');
+        setLabelColor('#39FF14') */
+    return(
+      <label className="ps-2" style={{color:labelColor}}>{valor}</label>
+    )
+  }
 export default function Compra(){
     const { user, setUser } = useContext(AuthContext);
     const { isLogged, logout } = useUser();
@@ -69,7 +84,7 @@ export default function Compra(){
                     <h5><strong>{user.name}</strong></h5>
                     <div className="d-flex flex-row">
                         <h5><strong>{user.email}</strong></h5>
-                        <label className="ps-2" style={{color:'#39FF14'}}>sin penalización</label>
+                        <ColorChangingLabel className="ps-2" valor={user.estado}></ColorChangingLabel>
                     </div>
                 </div>
             </div>

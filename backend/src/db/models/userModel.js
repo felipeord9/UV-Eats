@@ -37,6 +37,10 @@ const UserSchema = {
     allowNull: false,
     defaultValue: 'beneficiario'
   },
+  estado:{
+    type: DataTypes.ENUM(["SinPenalizar","Penalizado","En Fila","Aprovado"]),
+    allowNull:true,
+  },
   createdAt: {
     type: DataTypes.DATE,
     allowNull: false,

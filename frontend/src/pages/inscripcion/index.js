@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext,useEffect } from "react";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
@@ -87,13 +87,46 @@ function ChildModal(){
       );
 }
 
+const ColorChangingLabel = ({valor}) => {
+  const [labelColor, setLabelColor] = useState('#39FF14');
+  useEffect(() => {
+    // Lógica para determinar el color basado en el valor de la base de datos
+    if (valor === 'Penalizado') {
+      setLabelColor('red');
+    } else {
+      setLabelColor('#39FF14');
+    }
+  }, [valor]);
+      /* setLabelColor('#A9A9A9');
+      setLabelColor('#39FF14') */
+  return(
+    <label className="ps-2" style={{color:labelColor}}>{valor}</label>
+  )
+}
+
+const ColorButton = ({valor})=>{
+  const [colorButton,setColorButton]=useState();
+  const navigate = useNavigate();
+  const isButtonDisabled = valor ==='Penalizado';
+  useEffect(() => {
+    // Lógica para determinar el color basado en el valor de la base de datos
+    if (valor === 'Penalizado') {
+      setColorButton('grey');
+    } 
+  }, [valor]);
+  return(
+    <button disabled={isButtonDisabled} style={{backgroundColor:colorButton}} className='rounded-3 m-3' type="submit" onClick={(e)=>navigate('/compra')} >COMPRAR</button>
+  )
+}
+
 export default function Inscripcion(){
   const { user, setUser } = useContext(AuthContext);
   const { isLogged, logout } = useUser();
   const navigate = useNavigate();
-    const handleSubmit=async(e)=>{
-        e.preventDefault();
-    }
+  const handleSubmit=async(e)=>{
+    e.preventDefault();
+  }
+  
     const [open,setOpen]=useState(false);
     const handleOpen=()=>{
         setOpen(true);
@@ -108,6 +141,7 @@ export default function Inscripcion(){
     const handleCerrar=()=>{
         setCerrar(false);
     }
+    
     return(
       <>
       {isLogged && (
@@ -120,13 +154,15 @@ export default function Inscripcion(){
             <div className="pe-5 me-5">
                 <h1 className="p-2 rounded-4" style={{color:'white',backgroundColor:'#FF0000'}}>Bienvenido</h1>
             </div>
-            <div className="d-flex flex-row pb-5 mb-3">
+            <div className="d-flex flex-row pb-4 ">
                 <img src={User} style={{width:70,height:60}}/>
                 <div className="ps-2 pt-2">
                     <h5><strong>{user.name}</strong></h5>
                     <div className="d-flex flex-row">
                         <h5><strong>{user.email}</strong></h5>
-                        <label className="ps-2" style={{color:'#39FF14'}}>sin penalización</label>
+                        
+                          <ColorChangingLabel className="ps-2" valor={user.estado}></ColorChangingLabel>
+                                
                     </div>
                 </div>
             </div>
@@ -148,7 +184,7 @@ export default function Inscripcion(){
           </center>        
         </Box>
         </Modal> 
-        <button onClick={(e)=>navigate('/compra')} className='rounded-3 m-3' type="submit"><strong>COMPRAR</strong></button>
+        <ColorButton valor={user.estado} /* disabled={isButtonDisabled} */ onClick={(e)=>navigate('/compra')} className='rounded-3 m-3' type="submit"><strong>COMPRAR</strong></ColorButton>
         <div className="d-flex flex-center justify-content-center">
         </div>
         </div>
