@@ -13,7 +13,7 @@ const login = async (req, res, next) => {
 const changePassword = async (req, res, next) => {
   try {
     const {user, body} = req
-    const data = await AuthService.changePassword(user.sub, body.currentPassword, body.newPassword)
+    const data = await AuthService.changePassword(user.sub, body.currentEstado, body.newEstado)
 
     res.status(200).json(data)
   } catch (error) {

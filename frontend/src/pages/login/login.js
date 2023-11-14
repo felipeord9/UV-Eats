@@ -27,7 +27,9 @@ export default function Login() {
 
   useEffect(()=>{
     if(isLogged && user.role==='beneficiario')navigate('/inscripcion');
-    if(isLogged && user.role==='noBeneficiario')navigate('/no/beneficiarios');
+    if(isLogged && user.role==='noBeneficiario'
+    || isLogged && user.role==='beneficiario' && user.estado==='Penalizado'
+    || isLogged && user.role==='beneficiario' && user.estado==='En Fila')navigate('/no/beneficiarios');
   },[isLogged,navigate]);
 
   const handleLogin=async(e)=>{

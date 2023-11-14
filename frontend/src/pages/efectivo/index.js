@@ -9,7 +9,10 @@ import User from '../../assets/user.png'
 import MobileStepper from '@mui/material/MobileStepper';
 import { useNavigate } from 'react-router-dom';
 import useUser from "../../hooks/useUser";
-import Ayuda1 from '../../assets/ayuda1.png'
+import Ayuda1 from '../../assets/ayuda1.png';
+import LogoRojo from '../../assets/logo-rojo.png'
+import Swal from 'sweetalert2';
+
 
 const ColorChangingLabel = ({valor}) => {
   const [labelColor, setLabelColor] = useState('#39FF14');
@@ -24,7 +27,7 @@ const ColorChangingLabel = ({valor}) => {
       /* setLabelColor('#A9A9A9');
       setLabelColor('#39FF14') */
   return(
-    <label className="ps-2" style={{color:labelColor}}>{valor}</label>
+    <label className="ps-2" style={{color:labelColor}}><strong>{valor}</strong></label>
   )
 }
 
@@ -32,6 +35,19 @@ export default function Efectivo() {
   const { user, setUser } = useContext(AuthContext);
   const { isLogged, logout } = useUser();
   const navigate = useNavigate();
+
+  const handleSubmit=(e)=>{
+    e.preventDefault();
+      Swal.fire({
+        icon:'success',
+        title:'¡Felicidades!',
+        text:'Haz realizado tu compra de manera exitosa, vuelve pronto',
+        showConfirmButton:false,
+        timer:3500
+      }).then(()=>{
+        logout();
+      })
+  }
 
   return(
     <>
@@ -48,7 +64,7 @@ export default function Efectivo() {
                 <h1 className="p-2 rounded-4" style={{color:'white',backgroundColor:'#FF0000',fontSize:50}}>Bienvenido</h1>
             </div>
             <div className="d-flex flex-row pb-2 mb-3">
-                <img src={User} style={{width:70,height:60}}/>
+                <img src={LogoRojo} style={{width:70,height:70}}/>
                 <div className="ps-2 pt-2">
                     <h5><strong>{user.name}</strong></h5>
                     <div className="d-flex flex-row">
@@ -62,7 +78,7 @@ export default function Efectivo() {
         <div className='d-flex justify-content-center  '>
         <h2 style={{width:500}}><strong> Acércate a las oficinas de bienestar en el primer piso para pagar tu tiquete.</strong></h2>
         </div>
-        <button onClick={(e)=>logout(e)} className='mt-3 mb-3 rounded-4'>¡Entendido!</button>
+        <button onClick={handleSubmit} className='mt-3 mb-3 rounded-4'>¡Entendido!</button>
         </center>
       </form>
       <MobileStepper

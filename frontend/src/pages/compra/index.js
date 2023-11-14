@@ -10,6 +10,7 @@ import Ayuda1 from '../../assets/ayuda1.png'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { useNavigate } from 'react-router-dom';
+import LogoRojo from '../../assets/logo-rojo.png'
 import User from '../../assets/user.png'
 import useUser from "../../hooks/useUser";
 import AuthContext from "../../context/authContext";
@@ -41,7 +42,7 @@ const ColorChangingLabel = ({valor}) => {
         /* setLabelColor('#A9A9A9');
         setLabelColor('#39FF14') */
     return(
-      <label className="ps-2" style={{color:labelColor}}>{valor}</label>
+      <label className="ps-2" style={{color:labelColor}}><strong>{valor}</strong></label>
     )
   }
 export default function Compra(){
@@ -79,7 +80,7 @@ export default function Compra(){
                 <h1 className="p-2 rounded-4" style={{color:'white',backgroundColor:'#FF0000'}}>Bienvenido</h1>
             </div>
             <div className="d-flex flex-row pb-2 mb-3">
-                <img src={User} style={{width:70,height:60}}/>
+                <img src={LogoRojo} style={{width:70,height:70}}/>
                 <div className="ps-2 pt-2">
                     <h5><strong>{user.name}</strong></h5>
                     <div className="d-flex flex-row">

@@ -28,17 +28,17 @@ const signToken = (user) => {
   }
 }
 
-const changePassword = async (id, currentPassword, newPassword) => {
+const changePassword = async (id, currentEstado, newEstado) => {
   const user = await UserService.findOne(id)
 
-  const isMatch = bcrypt.compareSync(currentPassword, user.password)
+  /* const isMatch = bcrypt.compareSync(currentPassword, user.password)
 
-  if(!isMatch) throw boom.unauthorized()
+  if(!isMatch) throw boom.unauthorized() */
 
-  const hash = bcrypt.hashSync(newPassword, 10)
+  const hash = (newEstado)
 
-  const updatedUser = await user.update({ password: hash })
-  delete updatedUser.dataValues.password
+  const updatedUser = await user.update({ estado: newEstado })
+  delete updatedUser.dataValues.estado
   return updatedUser
 }
 

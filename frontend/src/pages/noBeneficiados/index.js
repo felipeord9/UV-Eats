@@ -13,12 +13,15 @@ import QRCode from 'react-qr-code';
 import { useNavigate } from 'react-router-dom';
 import useUser from "../../hooks/useUser";
 import AuthContext from "../../context/authContext";
+import LogoRojo from '../../assets/logo-rojo.png';
 import TablePagination from '@mui/material/TablePagination';
 import User from '../../assets/user.png'
 import TableUsers from "../../components/TableUsers"
 import Ayuda1 from '../../assets/ayuda1.png'
 import { findUsers, updateUser } from "../../services/userService"
 import { IoMdArrowRoundBack } from "react-icons/io";
+import Swal from "sweetalert2";
+import { changePassword } from '../../services/authService';
 
 const style = {
     align:'center',
@@ -111,6 +114,23 @@ const rows =[
     createData('4','202234212','Jose Albeiro'),
 ] */
 
+const ColorChangingLabel = ({valor}) => {
+  const [labelColor, setLabelColor] = useState('#39FF14');
+  useEffect(() => {
+    // Lógica para determinar el color basado en el valor de la base de datos
+    if (valor === 'En Fila') {
+      setLabelColor('#A9A9A9');
+    } else {
+      setLabelColor('#39FF14');
+    }
+  }, [valor]);
+      /* setLabelColor('#A9A9A9');
+      setLabelColor('#39FF14') */
+  return(
+    <label className="ps-2" style={{color:labelColor}}><strong>{valor}</strong></label>
+  )
+}
+
 export default function TableSobrantes() {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [buttonColor, setButtonColor] = useState('red');
@@ -124,7 +144,7 @@ export default function TableSobrantes() {
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
-    const [color,setColor] = useState('#A9A9A9')
+    /* const [color,setColor] = useState('#A9A9A9') */
     /* TABLA */
     const [loading, setLoading] = useState(false)
     const [suggestions, setSuggestions] = useState([])
@@ -178,16 +198,18 @@ export default function TableSobrantes() {
         setCerrar(false);
     }
 
+    const [estado,setEstado]=useState("");
+
     const [info,setInfo]=useState({
-      
       estado:"",
     })
     useEffect(()=>{
       if(user){
-        setInfo({
+        /* setInfo({
           
           estado: user?.estado
-        })
+        }) */
+        setEstado(user?.estado)
       }
     },[user])
     const handleChange = (e) => {
@@ -197,18 +219,62 @@ export default function TableSobrantes() {
         [id]: value,
       });
     };
+    const handleChange2 = (e) => {
+      const { value } = e.target;
+      setEstado(
+       
+        value
+      );
+    };
+    const [currentEstado,setCurrentEstado]= useState('');
+    const [newEstado,setNewEstado]=useState('');
     const handleUpdateUser=(e)=>{
       e.preventDefault();
-      updateUser(user.id,info)
+      setCurrentEstado(user?.estado);
+      setNewEstado('En Fila')
+      setEstado('En Fila')
+      /* changePassword({currentEstado,newEstado}) */
+      const body={
+        rowId: user?.rowId,
+        name: user?.name,
+        email: user?.email,
+        role: user?.role,
+        estado: 'En Fila'
+      }
+      updateUser(user.id,body)
+      .then((data)=>{
+        Swal.fire({
+          icon:'success',
+          title:'¡Que bien!',
+          text:'Te haz inscrito satisfactoriamente',
+          showConfirmButton:false,
+          timer:3000
+        }).then(()=>{
+          window.location.reload();
+        })
+      })
+      .catch((error)=>{
+        Swal.fire({
+          title: "¡Ha ocurrido un error!",
+            text: `
+              Hubo un error al momento de realizar la inscripcion, intente de nuevo!.
+              Si el problema persiste por favor comuniquese con el área de sistemas.`,
+            icon: "error",
+            confirmButtonText: "Aceptar",
+        })
+        .then(()=>{
+          window.location.reload();
+        })
+      })
     }
 
     /* Color y habilitacion de los botones */
     const ColorButton = ({valor})=>{
       const [colorButton,setColorButton]=useState();
-      const isButtonDisabled = valor ==='En Fila';
+      const isButtonDisabled = valor ==='En Fila' || valor==='Aprovado';
       useEffect(() => {
         // Lógica para determinar el color basado en el valor de la base de datos
-        if (valor === 'En Fila') {
+        if (valor === 'En Fila' || valor==='Aprovado') {
           setColorButton('grey');
         } 
       }, [valor]);
@@ -221,10 +287,10 @@ export default function TableSobrantes() {
     }
     const ColorButton2 = ({valor})=>{
       const [colorButton,setColorButton]=useState();
-      const isButtonDisabled = valor === null;
+      const isButtonDisabled = valor === null || valor==='Penalizado' || valor==='En Fila';
       useEffect(() => {
         // Lógica para determinar el color basado en el valor de la base de datos
-        if (valor === null) {
+        if (valor === null || valor==='Penalizado' || valor==='En Fila') {
           setColorButton('grey');
         } 
       }, [valor]);
@@ -246,12 +312,12 @@ export default function TableSobrantes() {
                 <h1 className="p-2 pe-5 ps-5   rounded-4" style={{color:'white',backgroundColor:'#FF0000'}}>Fila Virtual</h1>
             </div>
             <div className="d-flex flex-row mb-2 ms-5">
-                <img src={User} style={{width:70,height:60}}/>
+                <img src={LogoRojo} style={{width:70,height:70}}/>
                 <div className="ps-2 pt-2">
                     <h5><strong>{user.name}</strong></h5>
                     <div className="d-flex flex-row">
                         <h5><strong>{user.email}</strong></h5>
-                        <label className="ps-2" style={{color:color}}>{user.estado}</label>
+                        <ColorChangingLabel valor={user.estado} className="ps-2" /* style={{color:color}} */>{user.estado}</ColorChangingLabel>
                     </div>
                 </div>
             </div>
@@ -319,16 +385,17 @@ export default function TableSobrantes() {
 
      </div>
      <div style={{width:500}}>
-{/*       <input id="estado" type='text' onChange={handleChange} value={info.estado}/>
+{/*       <input id="estado" type='text' onChange={handleChange2} value={estado}/>
  */}     <ColorButton onClick={(e)=>(handleButtonClick(e),
                             handleIncripOpen(e),
-                            handleUpdateUser(e))} 
+                            handleUpdateUser(e),
+                            setEstado('En Fila'))} 
                             disabled={isButtonDisabled} 
                             style={{ backgroundColor: buttonColor }} 
                             valor={user.estado}
                             className='rounded-3 m-4' type="submit">
                             <strong>Inscribirme</strong></ColorButton>
-     <Modal open={isOpen}
+     {/* <Modal open={isOpen}
         onClose={handleIncripClose}
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
@@ -339,7 +406,7 @@ export default function TableSobrantes() {
           <h3 id="parent-modal-title">Te haz inscrito satisfactoriamente</h3>
           </center>
         </Box>
-    </Modal> 
+    </Modal> */} 
     </div>
     <div style={{width:200}}>
     <ColorButton2 onClick={(e)=>navigate('/compra')}  valor={user.estado} className='rounded-3 m-4' type="submit"><strong>Comprar</strong></ColorButton2>  

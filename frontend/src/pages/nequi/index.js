@@ -11,6 +11,23 @@ import QRCode from 'react-qr-code';
 import useUser from "../../hooks/useUser";
 import AuthContext from "../../context/authContext";
 import Ayuda1 from '../../assets/ayuda1.png'
+import LogoRojo from '../../assets/logo-rojo.png'
+import Swal from 'sweetalert2';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  justifyContent:'center',
+  boxShadow: 24,
+  p: 4,
+  borderRadius:5
+};
 
 const ColorChangingLabel = ({valor}) => {
   const [labelColor, setLabelColor] = useState('#39FF14');
@@ -25,7 +42,7 @@ const ColorChangingLabel = ({valor}) => {
       /* setLabelColor('#A9A9A9');
       setLabelColor('#39FF14') */
   return(
-    <label className="ps-2" style={{color:labelColor}}>{valor}</label>
+    <label className="ps-2" style={{color:labelColor}}><strong>{valor}</strong></label>
   )
 }
 
@@ -38,6 +55,26 @@ export default function Nequi() {
     const [size, setSize] = useState(160,160);
     const navigate = useNavigate();
 
+    const [cerrar,setCerrar]=useState(false);
+    const handleOpenCerrar=()=>{
+        setCerrar(true);
+    }
+    const handleCerrar=()=>{
+        setCerrar(false);
+    }
+
+    const handleSubmit=(e)=>{
+      e.preventDefault();
+        Swal.fire({
+          icon:'success',
+          title:'¡Felicidades!',
+          text:'Haz realizado tu compra de manera exitosa, vuelve pronto',
+          showConfirmButton:false,
+          timer:3500
+        }).then(()=>{
+          logout();
+        })
+    }
   return(
     <>
       {isLogged && (
@@ -53,7 +90,7 @@ export default function Nequi() {
                 <h1 className="p-2 rounded-4" style={{color:'white',backgroundColor:'#FF0000',fontSize:50}}>Bienvenido</h1>
             </div>
             <div className="d-flex flex-row ">
-                <img src={User} style={{width:70,height:60}}/>
+                <img src={LogoRojo} style={{width:70,height:70}}/>
                 <div className="ps-2 pt-2">
                     <h5><strong>{user.name}</strong></h5>
                     <div className="d-flex flex-row">
@@ -69,8 +106,8 @@ export default function Nequi() {
             <h5 className=''>Paga con el siguiente código QR</h5>
             <h5 className=''>ó</h5>
             <h5 className=''>Digita el número que se muestra en pantalla.</h5>
-            <h5 className='pt-4'>Valor del tiquete:</h5>
-            <h5 className='text-danger'>$2.000</h5>
+            <h5 className='pt-4'><strong>Valor del tiquete:</strong></h5>
+            <h5 className='text-danger'><strong>$2.000</strong></h5>
         </div>
         <div className='w-50 d-flex flex-column ps-5 pe-2 justify-content-center pt-5'>
         {value && (
@@ -82,10 +119,25 @@ export default function Nequi() {
                 size={size === '' ? 0 : size} 
             />
         )}
-        <label className='pt-2'>312456789</label>
+        <label className='pt-2'><strong>312456789</strong></label>
         </div>
         </div>
-        <button onClick={(e)=>logout(e)} className='mt-3 mb-3 rounded-4'>¡Entendido!</button>
+        <button onClick={handleSubmit} className='mt-3 mb-3 rounded-4'>¡Entendido!</button>
+        <Modal open={cerrar}
+          onClose={handleCerrar}
+          aria-labelledby="parent-modal-title"
+          aria-describedby="parent-modal-description"
+          >  
+        <Box sx={style}>
+          {/* <h2 id="parent-modal-title" className='text-danger text-align-center'>* Se ha cerrado la sección *</h2>  */}
+          <center>
+          <h1 id="parent-modal-title" className='text-danger text-align-center'>¡Felicidades!</h1>
+          <h4 >Haz realizado tu compra de manera exitosa, vuelve pronto</h4>
+          <button onClick={(e)=>(logout(e),handleCerrar)} className='m-4'>Yes</button> 
+      
+          </center>        
+        </Box>
+        </Modal> 
         </center>
       </form>
       <MobileStepper
