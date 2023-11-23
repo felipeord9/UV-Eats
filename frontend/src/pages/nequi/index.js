@@ -14,6 +14,7 @@ import Ayuda1 from '../../assets/ayuda1.png'
 import LogoRojo from '../../assets/logo-rojo.png'
 import Swal from 'sweetalert2';
 import Box from '@mui/material/Box';
+import { findUsers, updateUser } from "../../services/userService"
 import Modal from '@mui/material/Modal';
 
 const style = {
@@ -65,6 +66,15 @@ export default function Nequi() {
 
     const handleSubmit=(e)=>{
       e.preventDefault();
+      const body={
+        rowId: user?.rowId,
+          name: user?.name,
+          email: user?.email,
+          role: user?.role,
+          estado: 'comprado'
+      }
+      updateUser(user.id,body)
+      .then((data)=>{
         Swal.fire({
           icon:'success',
           title:'¡Felicidades!',
@@ -74,6 +84,20 @@ export default function Nequi() {
         }).then(()=>{
           logout();
         })
+      })
+      .catch((error)=>{
+        Swal.fire({
+          title: "¡Ha ocurrido un error!",
+            text: `
+              Hubo un error al momento de registrar tu compra, intente de nuevo!.
+              Si el problema persiste por favor comuniquese con el área de sistemas.`,
+            icon: "error",
+            confirmButtonText: "Aceptar",
+        })
+        .then(()=>{
+          window.location.reload();
+        })
+      })
     }
   return(
     <>

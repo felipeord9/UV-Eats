@@ -12,6 +12,33 @@ export const findUsers = async () => {
   })
   return data
 }
+export const findAllUsersBene = async () => {
+  const token = JSON.parse(localStorage.getItem("token"))
+  const { data } = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  return data
+}
+export const findAllUsersNoBene = async () => {
+  const token = JSON.parse(localStorage.getItem("token"))
+  const { data } = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  return data
+}
+export const findAllUsersOficial = async () => {
+  const token = JSON.parse(localStorage.getItem("token"))
+  const { data } = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  return data
+}
 export const createUser = async (body) => {
   const token = JSON.parse(localStorage.getItem("token"))
   const { data } = await axios.post(url, body, {

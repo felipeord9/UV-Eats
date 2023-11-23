@@ -6,25 +6,35 @@ const { Op } = require('sequelize')
 const find = async () => {
   const users = await models.User.findAll({
     where: {
-      /* role: {
-        [Op.not]: 'beneficiario',
-      }, */
-      /* estado:{
-        [Op.not]: null,
-        [Op.not]: 'SinPenalizar',
-        [Op.not]: 'Penalizado',
-        [Op.not]: 'Aprovado'
-        
-      } */
       estado:'En Fila'
-    },
-    attributes: {
-      exclude: 'password'
     }
   })
   return users
 }
-
+const findNoBene = async () => {
+  const users = await models.User.findAll({
+    where: {
+      role:'noBeneficiario'
+    }
+  })
+  return users
+}
+const findBene = async () => {
+  const users = await models.User.findAll({
+    where: {
+      estado:'comprado'
+    }
+  })
+  return users
+}
+const findOficial = async () => {
+  const users = await models.User.findAll({
+    where: {
+      role:'beneficiario'
+    }
+  })
+  return users
+}
 const findOne = async (id) => {
   const user = await models.User.findByPk(id)
 
@@ -68,6 +78,9 @@ const remove = async (id) => {
 
 module.exports = {
   find,
+  findNoBene,
+  findBene,
+  findOficial,
   findOne,
   findByEmail,
   create,

@@ -21,7 +21,9 @@ const ColorChangingLabel = ({valor}) => {
     // Lógica para determinar el color basado en el valor de la base de datos
     if (valor === 'Penalizado') {
       setLabelColor('red');
-    } else {
+    } else if(valor === 'YaCompro'){
+      setLabelColor('red');
+    }else {
       setLabelColor('#39FF14');
     }
   }, [valor]);
@@ -32,57 +34,10 @@ const ColorChangingLabel = ({valor}) => {
   )
 }
 
-export default function Efectivo() {
+export default function YaCompro() {
   const { user, setUser } = useContext(AuthContext);
   const { isLogged, logout } = useUser();
   const navigate = useNavigate();
-
-  const [estado,setEstado]=useState("");
-
-  useEffect(()=>{
-    if(user){
-      /* setInfo({
-        
-        estado: user?.estado
-      }) */
-      setEstado(user?.estado)
-    }
-  },[user])
-  const handleSubmit=(e)=>{
-    e.preventDefault();
-    const body={
-      rowId: user?.rowId,
-        name: user?.name,
-        email: user?.email,
-        estado: 'comprado',
-        role: user?.role,
-    }
-    updateUser(user.id,body)
-    .then((data)=>{
-      Swal.fire({
-        icon:'success',
-        title:`¡Felicidades!`,
-        text:'Haz realizado tu compra de manera exitosa, vuelve pronto',
-        showConfirmButton:false,
-        timer:3500
-      }).then(()=>{
-        logout();
-      })
-    })
-    .catch((error)=>{
-      Swal.fire({
-        title: "¡Ha ocurrido un error!",
-          text: `
-            Hubo un error al momento de registrar tu compra, intente de nuevo!.
-            Si el problema persiste por favor comuniquese con el área de sistemas.`,
-          icon: "error",
-          confirmButtonText: "Aceptar",
-      })
-      .then(()=>{
-        window.location.reload();
-      })
-    })
-  }
 
   return(
     <>
@@ -98,22 +53,24 @@ export default function Efectivo() {
             <div className="pe-5 me-5">
                 <h1 className="p-2 rounded-4" style={{color:'white',backgroundColor:'#FF0000',fontSize:50}}>Bienvenido</h1>
             </div>
+            <div style={{width:100}}></div>
             <div className="d-flex flex-row pb-2 mb-3">
                 <img src={LogoRojo} style={{width:70,height:70}}/>
                 <div className="ps-2 pt-2">
                     <h5><strong>{user.name}</strong></h5>
                     <div className="d-flex flex-row">
                         <h5><strong>{user.email}</strong></h5>
-                        <ColorChangingLabel className="ps-2" valor={user.estado}></ColorChangingLabel>
+                        <label className="ps-2 text-danger" ><strong>Ya Compró</strong></label>
                     </div>
                 </div>
             </div>
         </div>
         <center>
-        <div className='d-flex justify-content-center  '>
-        <h2 style={{width:500}}><strong> Acércate a las oficinas de bienestar en el primer piso para pagar tu tiquete.</strong></h2>
+        <div className='d-flex flex-column justify-content-center  '>
+        <h1 className='mb-4 text-danger' style={{fontSize:100}}><strong>¡Uops...!</strong></h1>
+        <h2 ><strong> Parece que ya has realizado tu compra. Acercate a efectuar tu pago o de no ser así, acerca a el área de sistemas para solucionar tu problema.</strong></h2>
         </div>
-        <button onClick={handleSubmit} className='mt-3 mb-3 rounded-4'>¡Entendido!</button>
+        <button onClick={(e)=>logout(e)} className='mt-3 mb-3 rounded-4'>¡Entendido!</button>
         </center>
       </form>
       <MobileStepper

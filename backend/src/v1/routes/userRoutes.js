@@ -11,7 +11,10 @@ const router = express.Router();
 )
  */
 router
-  .get("/", UserController.findAllUsers)
+  .get("/",UserController.findAllUsers)
+  .get("/beneficiarios", UserController.findAllUsersBene)
+  .get("/nobeneficiarios", UserController.findAllUsersNoBene)
+  .get("/oficial", UserController.findAllUsersOficial)
   .get("/:id", UserController.findOneUser)
   .post('/', UserController.createUser)
   .patch('/:id', UserController.updateUser)

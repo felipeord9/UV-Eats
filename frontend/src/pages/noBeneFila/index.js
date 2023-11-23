@@ -118,7 +118,7 @@ const ColorChangingLabel = ({valor}) => {
   const [labelColor, setLabelColor] = useState('#39FF14');
   useEffect(() => {
     // Lógica para determinar el color basado en el valor de la base de datos
-    if (valor === 'En Fila' || valor==='Penalizado') {
+    if (valor === 'En Fila') {
       setLabelColor('#A9A9A9');
     } else {
       setLabelColor('#39FF14');
@@ -131,7 +131,7 @@ const ColorChangingLabel = ({valor}) => {
   )
 }
 
-export default function TableSobrantes() {
+export default function NoBeneFila() {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [buttonColor, setButtonColor] = useState('red');
   const navigate = useNavigate();
@@ -250,7 +250,7 @@ export default function TableSobrantes() {
           showConfirmButton:false,
           timer:3000
         }).then(()=>{
-          navigate('/no/beneficiarios/fila')
+          window.location.reload();
         })
       })
       .catch((error)=>{
@@ -317,7 +317,7 @@ export default function TableSobrantes() {
                     <h5><strong>{user.name}</strong></h5>
                     <div className="d-flex flex-row">
                         <h5><strong>{user.email}</strong></h5>
-                        <ColorChangingLabel valor={user.estado} className="ps-2" /* style={{color:color}} */>{user.estado}</ColorChangingLabel>
+                        <label className="ps-2" style={{color:'grey'}}>en fila</label>
                     </div>
                 </div>
             </div>
@@ -386,15 +386,11 @@ export default function TableSobrantes() {
      </div>
      <div style={{width:500}}>
 {/*       <input id="estado" type='text' onChange={handleChange2} value={estado}/>
- */}     <ColorButton onClick={(e)=>(handleButtonClick(e),
-                            handleIncripOpen(e),
-                            handleUpdateUser(e),
-                            setEstado('En Fila'))} 
-                            disabled={isButtonDisabled} 
-                            style={{ backgroundColor: buttonColor }} 
-                            valor={user.estado}
+ */}     <button disabled 
+                            style={{ backgroundColor: 'grey' }} 
+                            
                             className='rounded-3 m-4' type="submit">
-                            <strong>Inscribirme</strong></ColorButton>
+                            <strong>Inscribirme</strong></button>
      {/* <Modal open={isOpen}
         onClose={handleIncripClose}
         aria-labelledby="parent-modal-title"
@@ -409,7 +405,7 @@ export default function TableSobrantes() {
     </Modal> */} 
     </div>
     <div style={{width:200}}>
-    <ColorButton2 onClick={(e)=>navigate('/compra')}  valor={user.estado} className='rounded-3 m-4' type="submit"><strong>Comprar</strong></ColorButton2>  
+    <button className='rounded-3 m-4' disabled style={{backgroundColor:'grey'}} type="submit"><strong>Comprar</strong></button>  
     </div>           
     </div>   
      {/* <button onClick={handleOpen} disabled className='rounded-3 m-4' type="submit"><strong>Comprar</strong></button>

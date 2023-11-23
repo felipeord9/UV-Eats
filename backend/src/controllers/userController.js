@@ -1,5 +1,6 @@
 const UserService = require("../services/userService");
 
+/* busqueda de usuaruis depenpiendo del estado y el rol */
 const findAllUsers = async (req, res, next) => {
   try {
     const data = await UserService.find();
@@ -12,6 +13,45 @@ const findAllUsers = async (req, res, next) => {
     next(error);
   }
 };
+const findAllUsersNoBene = async (req, res, next) => {
+  try {
+    const data = await UserService.findNoBene();
+
+    res.status(200).json({
+      message: "OK",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+const findAllUsersBene = async (req, res, next) => {
+  try {
+    const data = await UserService.findBene();
+
+    res.status(200).json({
+      message: "OK",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+const findAllUsersOficial = async (req, res, next) => {
+  try {
+    const data = await UserService.findOficial();
+
+    res.status(200).json({
+      message: "OK",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+/*  */
 
 const findOneUser = async (req, res, next) => {
   try {
@@ -73,6 +113,9 @@ const deleteUser = async (req, res, next) => {
 
 module.exports = {
   findAllUsers,
+  findAllUsersBene,
+  findAllUsersNoBene,
+  findAllUsersOficial,
   findOneUser,
   createUser,
   updateUser,

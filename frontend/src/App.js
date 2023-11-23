@@ -5,12 +5,14 @@ import { BrowserRouter as Router, Routes,Route,Navigate } from 'react-router-dom
 import Login from '../src/pages/login/login'
 import Inscripcion from './pages/inscripcion';
 import TableSobrantes from './pages/noBeneficiados';
-import TablaBecas from './pages/listaBeca';
-import Penalizacion from './pages/penalizacion';
 import PQRS from './pages/PQRS'
+import Navbar from './components/Navbar';
+import NoBeneFila from './pages/noBeneFila';
 import Compra from './pages/compra'
 import Efectivo from './pages/efectivo';
 import Nequi from './pages/nequi';
+import TableNoBene from './pages/tablaNoBene';
+import YaCompro from './pages/yaCompro';
 import Page404 from './pages/page404';
 import PrivateRoute from '../src/components/PrivateRoute';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -26,14 +28,15 @@ function App() {
 
         <Route path='/inscripcion' element={<PrivateRoute component={Inscripcion}/>}/>
         <Route path='/no/beneficiarios' element={<PrivateRoute component={TableSobrantes}/>}/>
-        <Route path='/tabla/becas' element={<TablaBecas/>}/>
-        <Route path='/penalizacion' element={<Penalizacion/>}/>
+        <Route path='/no/beneficiarios/fila' element={<PrivateRoute component={NoBeneFila}/>}/>
+        <Route path='/already/buy' element={<PrivateRoute component={YaCompro}/>}/>
         <Route path='/PQRS' element={< PQRS/>}/>
         <Route path='/compra' element={<PrivateRoute component={Compra}/>}/>
         <Route path='/compra/efectivo' element={<PrivateRoute component={Efectivo}/>}/>
         <Route path='/compra/nequi' element={<PrivateRoute component={Nequi}/>}/>
-
+        <Route path='/navbar/admin' element={<PrivateRoute component={Navbar}/>}/>
         <Route path='*' element={<Page404/>}/>
+        <Route path='/table/no/beneficiarios' element={<PrivateRoute component={TableNoBene}/>}/>
      </Routes>
     </div>
     </Router>
