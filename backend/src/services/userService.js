@@ -22,7 +22,7 @@ const findNoBene = async () => {
 const findBene = async () => {
   const users = await models.User.findAll({
     where: {
-      estado:'comprado'
+      role:'beneficiario'
     }
   })
   return users
@@ -30,7 +30,7 @@ const findBene = async () => {
 const findOficial = async () => {
   const users = await models.User.findAll({
     where: {
-      role:'beneficiario'
+      estado:'comprado'
     }
   })
   return users

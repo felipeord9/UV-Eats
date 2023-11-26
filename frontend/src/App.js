@@ -11,8 +11,10 @@ import NoBeneFila from './pages/noBeneFila';
 import Compra from './pages/compra'
 import Efectivo from './pages/efectivo';
 import Nequi from './pages/nequi';
-import TableNoBene from './pages/tablaNoBene';
+import NoBeneficiarios from './pages/noBeneficiarios';
 import YaCompro from './pages/yaCompro';
+import Beneficiarios from './pages/Beneficiarios';
+import ListaOFicial from './pages/listaOficial';
 import Page404 from './pages/page404';
 import PrivateRoute from '../src/components/PrivateRoute';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -36,7 +38,10 @@ function App() {
         <Route path='/compra/nequi' element={<PrivateRoute component={Nequi}/>}/>
         <Route path='/navbar/admin' element={<PrivateRoute component={Navbar}/>}/>
         <Route path='*' element={<Page404/>}/>
-        <Route path='/table/no/beneficiarios' element={<PrivateRoute component={TableNoBene}/>}/>
+        <Route path='/table/no/beneficiarios' element={<PrivateRoute component={NoBeneficiarios}/>}/>
+        <Route path='/table/beneficiarios' element={<PrivateRoute component={Beneficiarios}/>}/>
+        <Route path='/table/oficial/diaria' element={<PrivateRoute component={ListaOFicial}/>}/>
+
      </Routes>
     </div>
     </Router>

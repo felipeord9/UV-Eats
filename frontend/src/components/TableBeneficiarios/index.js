@@ -3,7 +3,7 @@ import DataTable from 'react-data-table-component'
 import useAlert from '../../hooks/useAlert';
 import { Autocomplete } from '@mui/material';
 
-export default function TableNoBene({ noBene, loading, setSelectedUser, setShowModal }) {
+export default function TableBeneficiarios({ beneficiarios, loading, setSelectedUser, setShowModal }) {
   const { successAlert } = useAlert()
   const columns = [
     {
@@ -32,7 +32,7 @@ export default function TableNoBene({ noBene, loading, setSelectedUser, setShowM
       name: "Estado",
       selector: (row) => row.estado,
       sortable: true,
-      width: '100px'
+      width: '120px'
     },
     {
       id: "options",
@@ -60,7 +60,7 @@ export default function TableNoBene({ noBene, loading, setSelectedUser, setShowM
         className="bg-light text-center border border-2 h-100"
         style={{fontSize:20 , height:450}}
         columns={columns}
-        data={noBene}
+        data={beneficiarios}
         fixedHeaderScrollHeight={200}
         
         progressPending={loading}

@@ -53,7 +53,7 @@ export default function YaCompro() {
             <div className="pe-5 me-5">
                 <h1 className="p-2 rounded-4" style={{color:'white',backgroundColor:'#FF0000',fontSize:50}}>Bienvenido</h1>
             </div>
-            <div style={{width:100}}></div>
+            <div style={{width:300}}></div>
             <div className="d-flex flex-row pb-2 mb-3">
                 <img src={LogoRojo} style={{width:70,height:70}}/>
                 <div className="ps-2 pt-2">
@@ -68,7 +68,7 @@ export default function YaCompro() {
         <center>
         <div className='d-flex flex-column justify-content-center  '>
         <h1 className='mb-4 text-danger' style={{fontSize:100}}><strong>¡Uops...!</strong></h1>
-        <h2 ><strong> Parece que ya has realizado tu compra. Acercate a efectuar tu pago o de no ser así, acerca a el área de sistemas para solucionar tu problema.</strong></h2>
+        <h2 style={{width:900}} ><strong> Parece que ya has realizado tu compra. Acercate a efectuar tu pago o de no ser así, acerca a el área de sistemas para solucionar tu problema.</strong></h2>
         </div>
         <button onClick={(e)=>logout(e)} className='mt-3 mb-3 rounded-4'>¡Entendido!</button>
         </center>

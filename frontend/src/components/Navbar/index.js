@@ -199,7 +199,7 @@ export default function Navbar() {
                         </div>
                         <div className="d-flex flex-row justify-content-center">
                           <div onClick={handleClose} >
-                            <button  className='m-4' onClick={(e)=>logout(e)} style={{fontSize:18}}><strong>YES</strong></button>
+                            <button  className='m-4 rounded-2' onClick={(e)=>logout(e)} style={{fontSize:18}}><strong>YES</strong></button>
                           </div>
                         <div>
                           <Button variant="contained" color="primary" style={{width:90, height:55,fontSize:22}} className="m-4" onClick={handleCloseModal}>NO</Button> 

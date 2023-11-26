@@ -31,7 +31,7 @@ export default function Login() {
     || isLogged && user.role==='beneficiario' && user.estado==='Penalizado'
     || isLogged && user.role==='beneficiario' && user.estado==='En Fila')navigate('/no/beneficiarios');
     if(isLogged && user.estado==='comprado')navigate('/already/buy')
-    if(isLogged && user.role==='admin')navigate('/navbar/admin')
+    if(isLogged && user.role==='admin')navigate('/table/no/beneficiarios')
   },[isLogged,navigate]);
 
   const handleLogin=async(e)=>{

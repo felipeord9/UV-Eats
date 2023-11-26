@@ -3,7 +3,7 @@ import DataTable from 'react-data-table-component'
 import useAlert from '../../hooks/useAlert';
 import { Autocomplete } from '@mui/material';
 
-export default function TableNoBene({ noBene, loading, setSelectedUser, setShowModal }) {
+export default function TableOficiales({ oficiales, loading, setSelectedUser, setShowModal }) {
   const { successAlert } = useAlert()
   const columns = [
     {
@@ -11,44 +11,28 @@ export default function TableNoBene({ noBene, loading, setSelectedUser, setShowM
       name: "Código",
       selector: (row) => row.email,
       sortable: true,
-      width: '120px'
+      width: '150px'
     },
     {
       id: "name",
       name: "Nombre",
       selector: (row) => row.name,
       sortable: true,
-      width: '220px'
+      width: '250px'
     },
     {
       id: "role",
       name: "Rol",
       selector: (row) => row.role,
       sortable: true,
-      width: '150px'
+      width: '180px'
     },
     {
       id: "estado",
       name: "Estado",
       selector: (row) => row.estado,
       sortable: true,
-      width: '100px'
-    },
-    {
-      id: "options",
-      name: "Editar",
-      center: true,
-      cell: (row, index, column, id) => (
-        <div className='d-flex gap-2 p-1'>
-          <button title="Editar usuario" className='btn btn-sm btn-primary' onClick={(e) => {
-            setSelectedUser(row)
-            setShowModal(true)
-          }}>
-            <FiIcons.FiEdit />
-          </button>
-        </div>
-      ),
-      width: '100px'
+      width: '180px'
     },
   ]
   
@@ -60,7 +44,7 @@ export default function TableNoBene({ noBene, loading, setSelectedUser, setShowM
         className="bg-light text-center border border-2 h-100"
         style={{fontSize:20 , height:450}}
         columns={columns}
-        data={noBene}
+        data={oficiales}
         fixedHeaderScrollHeight={200}
         
         progressPending={loading}

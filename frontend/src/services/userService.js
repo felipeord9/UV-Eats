@@ -14,7 +14,7 @@ export const findUsers = async () => {
 }
 export const findAllUsersBene = async () => {
   const token = JSON.parse(localStorage.getItem("token"))
-  const { data } = await axios.get(url, {
+  const { data } = await axios.get(`${url}/:beneficiarios`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -23,7 +23,7 @@ export const findAllUsersBene = async () => {
 }
 export const findAllUsersNoBene = async () => {
   const token = JSON.parse(localStorage.getItem("token"))
-  const { data } = await axios.get(url, {
+  const { data } = await axios.get(`${url}/no/beneficiarios`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -32,7 +32,7 @@ export const findAllUsersNoBene = async () => {
 }
 export const findAllUsersOficial = async () => {
   const token = JSON.parse(localStorage.getItem("token"))
-  const { data } = await axios.get(url, {
+  const { data } = await axios.get(`${url}/lista/oficial`, {
     headers: {
       Authorization: `Bearer ${token}`
     }

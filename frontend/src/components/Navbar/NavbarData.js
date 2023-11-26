@@ -16,14 +16,14 @@ export const NavBarData = [
     access:['admin']
   },{
     title:'Lista Beneficiarios',
-    path:'/credito/persona/natural',
+    path:'/table/beneficiarios',
     icon:<RiContactsBook2Line/>,
     cName:'nav-text',
     access:['admin']
   },
   {
     title: "Lista oficial Diiaria",
-    path: "/terceros",
+    path: "/table/oficial/diaria",
     icon: <BsClipboardCheck />,
     cName: "nav-text",
     access: ['admin']
