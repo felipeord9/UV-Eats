@@ -33,13 +33,14 @@ const UserSchema = {
     field: 'recovery_token'
   },
   role: {
-    type: DataTypes.ENUM(["beneficiario", "noBeneficiario","admin"]),
-    allowNull: false,
-    defaultValue: 'noBeneficiario'
+    type:DataTypes.STRING,
+        allowNull:false,
+        field:'role'
   },
   estado:{
-    type: DataTypes.ENUM(["SinPenalizar","Penalizado","En Fila","Aprovado","comprado"]),
-    allowNull:true,
+    type:DataTypes.STRING,
+        allowNull:false,
+        field:'estado'
   },
   createdAt: {
     type: DataTypes.DATE,

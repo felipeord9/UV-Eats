@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Modal, Button } from "react-bootstrap";
 import Swal from 'sweetalert2'
 import { createUser, updateUser } from "../../services/userService";
 import * as Bs from "react-icons/bs";
+import { getAllCiudades } from "../../services/ciudadService";
+import { getAllDepartamentos } from "../../services/departamentoService";
+
 
 export default function ModalUsers({
   user,
@@ -11,24 +14,32 @@ export default function ModalUsers({
   setShowModal,
   reloadInfo,
 }) {
+  const [error, setError] = useState('')
+  
+  const [ciudad, setCiudad] = useState(null);
+  const [departamento,setDepartamento]= useState('');
+
+  const [ciudades,setCiudades] = useState([]);
+  const [departamentos,setDepartamentos]=useState([]);
+  
   const [info, setInfo] = useState({
     rowId:'',
     name: "",
     email: "",
     password:'',
-    role: "",
+    role: '',
     estado:'',
   });
-  const [error, setError] = useState('')
- 
   useEffect(() => {
     if(user) {
       setInfo({
         name: user?.name,
         email: user?.email,
-        role: user?.role,
-        estado: user?.estado,
+        /* role: user?.role,
+        estado: user?.estado, */
       })
+      setCiudad(user?.role)
+      setDepartamento(user?.estado)
     }
   }, [user])
 
@@ -56,9 +67,8 @@ export default function ModalUsers({
           rowId: info.email,
           name: info.name,
           email:info.email,
-          password:info.email,
-          role: info.role,
-          estado: info.estado
+          role: departamento.description,
+          estado: ciudad.description
         }
         createUser(body)
           .then((data) => {
@@ -98,7 +108,14 @@ export default function ModalUsers({
           icon:'question'
     }).then((result)=>{
       if(result.isConfirmed){
-        updateUser(user.id, info)
+        const body={
+          rowId: info.email,
+          name: info.name,
+          email:info.email,
+          role: departamento.description,
+          estado: ciudad.description
+        }
+        updateUser(user.id, body)
           .then((data) => {           
             setShowModal(!showModal)
             reloadInfo();
@@ -134,6 +151,16 @@ export default function ModalUsers({
   const [shown,setShown]=useState("");
   const switchShown =()=>setShown(!shown);
 
+  /* --------------------------------------------------- */
+
+  const selectDepartamentoRef=useRef();
+  const selectCiudadRef=useRef();
+
+  useEffect(()=>{
+    getAllDepartamentos().then((data) => setDepartamentos(data));
+      getAllCiudades().then((data) => setCiudades(data));
+
+  },[]);
   return (
     <div className="wrapper d-flex justify-content-center align-content-center" style={{userSelect:'none'}}>
     <Modal show={showModal} style={{ fontSize: 18, userSelect:'none' }} centered>
@@ -181,24 +208,49 @@ export default function ModalUsers({
               </div>
               <div>
                 <label className="fw-bold" style={{fontSize:20}}>Rol</label>
-                <select
+                <select     
+                    id="role"               
+                    ref={selectDepartamentoRef}
+                    value={info.role}
+                    onChange={(e)=>(setDepartamento(JSON.parse(e.target.value)),handleChange(e))}
+                    className="form-select form-select-sm m-100 me-3"
+                    required   
+                 >
+                   <option selected value='' disabled>
+                    -- Seleccione el Departamento --
+                  </option>
+                      {departamentos
+                      .sort((a,b)=>a.id - b.id)
+                      .map((elem)=>(
+                        <option key={elem.id} id={elem.id} value={JSON.stringify(elem)}>
+                          {elem.description} 
+                        </option>
+                      ))
+                    }
+                    </select>
+                    {/* <select
                   id="role"
                   value={info.role}
                   className="form-select form-select-sm"
                   onChange={handleChange}
-                  required
-                  style={{height:40, fontSize:17}}
+                 style={{height:40, fontSize:17}}
                 >
                   <option selected disabled value="">
                     -- Seleccione un rol --
                   </option>
                   <option value="beneficiario">Beneficiario</option>
-                  <option value="noBeneficiario">No Beneficiario</option>
-                </select>
+                  <option value="noBeneficiario">no Beneficiario</option>
+                  </select> */}
+                  {/* <option value="En Fila">En fila</option>
+                  <option value="Aprovado">Aprovado</option>
+                  <option value="comprado">Comprado</option>
+                  <option >Ninguno</option> */}
+                    {/* <option value="beneficiario">Beneficiario</option>
+                    <option value="noBeneficiario">No Beneficiario</option> */}
               </div>
               <div>
                 <label className="fw-bold" style={{fontSize:20}}>Estado</label>
-                <select
+                {/* <select
                   id="estado"
                   value={info.estado}
                   className="form-select form-select-sm"
@@ -214,7 +266,32 @@ export default function ModalUsers({
                   <option value="Aprovado">Aprovado</option>
                   <option value="comprado">Comprado</option>
                   <option >Ninguno</option>
-                </select>
+                </select> */}
+                <select
+                    id="estado"
+                    ref={selectCiudadRef}
+                    className="form-select form-select-sm w-100"
+                    required
+                    disabled={departamento ? false : true}
+                    value={info.estado} 
+                    onChange={(e)=>(setCiudad(JSON.parse(e.target.value)),handleChange(e))}
+                  >
+                    
+                  <option selected value='' disabled>
+                    -- Seleccione la Ciudad --
+                  </option>  
+                  {ciudades
+                  .sort((a,b)=>a.id - b.id)
+                  .map((elem)=>(
+                    elem.codigo == departamento.codigo ?
+                    <option id={elem.id} value={JSON.stringify(elem)}>
+                    {elem.description}
+                    </option>
+                    : 
+                    null
+                  ))
+                }
+                  </select>
               </div>
             </div>
             <div className="d-flex w-100 mt-2">

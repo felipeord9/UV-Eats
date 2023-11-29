@@ -287,10 +287,10 @@ export default function TableSobrantes() {
     }
     const ColorButton2 = ({valor})=>{
       const [colorButton,setColorButton]=useState();
-      const isButtonDisabled = valor === null || valor==='Penalizado' || valor==='En Fila';
+      const isButtonDisabled = valor === 'inicio' || valor==='Penalizado' || valor==='En Fila';
       useEffect(() => {
         // Lógica para determinar el color basado en el valor de la base de datos
-        if (valor === null || valor==='Penalizado' || valor==='En Fila') {
+        if (valor === 'inicio' || valor==='Penalizado' || valor==='En Fila') {
           setColorButton('grey');
         } 
       }, [valor]);
